@@ -14,6 +14,8 @@ class WelcomeTableViewCell: UITableViewCell {
     @IBOutlet weak var checkBoxImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var profileImageHeightCons: NSLayoutConstraint!
+    @IBOutlet weak var profileImageWidthCons: NSLayoutConstraint!
     
     func configureCell(_ welcomeData: WelcomeModel) {
         nameLabel.text = welcomeData.id
@@ -23,8 +25,18 @@ class WelcomeTableViewCell: UITableViewCell {
             profileImageView.sd_setImage(with: url, placeholderImage: UIImage())
         }
 //        ImageCache.setImage(imageView: profileImageView, urlString: welcomeData.download_url)
-        checkBoxImageView.image = UIImage(named: welcomeData.isSeleceted ? "circle_tick_icon" : "circle_outline_icon")
         
+        //set Height & width for image
+        let imgWidth = welcomeData.imageWidth > maximumImageWidth ? maximumImageWidth :  welcomeData.imageWidth
+        let imgHeight = welcomeData.imageHeight > maximumImageWidth ? maximumImageWidth :  welcomeData.imageHeight
+        profileImageWidthCons.constant =  CGFloat(imgWidth)
+        profileImageHeightCons.constant =  CGFloat(imgHeight)
+        
+        setCheckBoxView(welcomeData)
+    }
+    
+    func setCheckBoxView(_ welcomeData: WelcomeModel) {
+        checkBoxImageView.image = UIImage(named: welcomeData.isSeleceted ? "circle_tick_icon" : "circle_outline_icon")
     }
     
 }

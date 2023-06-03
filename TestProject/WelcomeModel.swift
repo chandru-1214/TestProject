@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct WelcomeModel: Hashable, Codable {
+struct WelcomeModel: Codable {
     var id: String?
     var author: String?
     var width: Int?
@@ -37,5 +37,15 @@ struct WelcomeModel: Hashable, Codable {
         download_url = try? container.decodeIfPresent(String.self, forKey: .download_url)
     }
     
-    var isSeleceted: Bool = false 
+    var isSeleceted: Bool = false
+    
+    var imageWidth: Int {
+        (width ?? 200) / 10
+    }
+    
+    var imageHeight: Int {
+        (height ?? 200) / 10
+    }
+    
+    var contentSize = CGSize(width: 200, height: 21)
 }

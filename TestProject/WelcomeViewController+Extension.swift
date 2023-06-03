@@ -16,7 +16,11 @@ extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        60
+        let welocomData = welcomVM.welcomeList[indexPath.row]
+        let imgHeight = welocomData.imageHeight > maximumImageWidth ? maximumImageWidth :  welocomData.imageHeight
+        //adding image height & bottom view height & author content size
+        return CGFloat(imgHeight + 80) + welocomData.contentSize.height
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,7 +74,8 @@ extension WelcomeViewController: PopupViewControllerDelegate {
        if let index = welcomVM.welcomeList.firstIndex(where: { $0.id == welcomeData.id }) {
            welcomVM.welcomeList[index].isSeleceted.toggle()
            let cellIndexPath = IndexPath(row: index, section: 0)
-           authorsTableView.reloadRows(at: [cellIndexPath], with: .automatic)
+           let cell = authorsTableView.cellForRow(at: cellIndexPath) as! WelcomeTableViewCell
+           cell.setCheckBoxView(welcomVM.welcomeList[index])
         }
     }
     

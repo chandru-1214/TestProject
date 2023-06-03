@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol WelcomeViewModelDelegate: AnyObject {
     func refreshView()
@@ -37,18 +38,29 @@ class WelcomeViewModel: NSObject {
                 let decoder = JSONDecoder()
                 do {
                     let welcomeModels = try decoder.decode([WelcomeModel].self, from: data)
-                    if self.offset == 1 {
-                        self.addWelcomeList(welcomeModels)
-                    } else {
-                        self.welcomeList.append(contentsOf: welcomeModels)
-                    }
-                    delegate?.refreshView()
+                    self.checkAndUpdateModel(welcomeModels)
                 } catch {
                     print(String(describing: error))
                 }
             }
         }
         task.resume()
+    }
+    
+    
+    private func checkAndUpdateModel(_ welcomeModels: [WelcomeModel]) {
+        var welcomeModels = welcomeModels
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return  }
+            self.setMessagesContentSize(models: &welcomeModels)
+            if self.offset == 1 {
+                self.addWelcomeList(welcomeModels)
+            } else {
+                self.welcomeList.append(contentsOf: welcomeModels)
+            }
+            self.delegate?.refreshView()
+        }
+       
     }
     
     /// Method to add welocome data list
@@ -64,5 +76,28 @@ class WelcomeViewModel: NSObject {
                 welcomeList.append(list)
             }
         }
+    }
+    
+    
+    /// Method to set cotent size of message
+    /// - Parameter models: Denotes model list
+    private func setMessagesContentSize(models: inout [WelcomeModel]) {
+        for index in 0..<models.count {
+            models[index].contentSize = getMessageContentSize(model: models[index])
+        }
+    }
+    
+    /// Method to get content size of particular model
+    /// - Parameter model: Denotes model
+    /// - Returns: Returns CGSize of model content
+    private func getMessageContentSize(model: WelcomeModel) -> CGSize {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: maximumTextWidth, height:21))
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.text = model.author
+        var labelSize = label.sizeThatFits(CGSize(width: label.frame.width, height: CGFloat.greatestFiniteMagnitude))
+        labelSize.width = (labelSize.width > maximumTextWidth ? maximumTextWidth : labelSize.width)
+        labelSize.height =  (labelSize.height < minimunTextHeight ? minimunTextHeight : labelSize.height)
+        return labelSize
     }
 }
