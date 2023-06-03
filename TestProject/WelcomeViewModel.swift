@@ -2,7 +2,7 @@
 //  WelcomeViewModel.swift
 //  TestProject
 //
-//  Created by Vignesh S on 03/06/23.
+//  Created by Chandru M on 03/06/23.
 //
 
 import Foundation
@@ -26,7 +26,6 @@ class WelcomeViewModel: NSObject {
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
         // request.httpMethod = "GET"
-        print("URl >>> \(url)")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: request) { [weak self] data, response, error in

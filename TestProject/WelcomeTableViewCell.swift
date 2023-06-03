@@ -2,10 +2,11 @@
 //  WelcomeTableViewCell.swift
 //  TestProject
 //
-//  Created by Vignesh S on 03/06/23.
+//  Created by Chandru M on 03/06/23.
 //
 
 import UIKit
+import SDWebImage
 
 class WelcomeTableViewCell: UITableViewCell {
     
@@ -18,6 +19,10 @@ class WelcomeTableViewCell: UITableViewCell {
         nameLabel.text = welcomeData.id
         descriptionLabel.text = welcomeData.author
         selectionStyle = .none
+        if let url = URL(string: welcomeData.download_url) {
+            profileImageView.sd_setImage(with: url, placeholderImage: UIImage())
+        }
+//        ImageCache.setImage(imageView: profileImageView, urlString: welcomeData.download_url)
     }
     
 }
