@@ -18,7 +18,7 @@ class SplashViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Timer.scheduledTimer(timeInterval: 5,
+        Timer.scheduledTimer(timeInterval: 0,
                                          target: self,
                                          selector: #selector(chekNavigation),
                                          userInfo: nil,
