@@ -19,10 +19,12 @@ class WelcomeTableViewCell: UITableViewCell {
         nameLabel.text = welcomeData.id
         descriptionLabel.text = welcomeData.author
         selectionStyle = .none
-        if let url = URL(string: welcomeData.download_url) {
+        if let url = URL(string: welcomeData.download_url ?? "") {
             profileImageView.sd_setImage(with: url, placeholderImage: UIImage())
         }
 //        ImageCache.setImage(imageView: profileImageView, urlString: welcomeData.download_url)
+        checkBoxImageView.image = UIImage(named: welcomeData.isSeleceted ? "circle_tick_icon" : "circle_outline_icon")
+        
     }
     
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 
+//MARK: -  UITableViewDelegate, UITableViewDataSource
 extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -27,20 +28,27 @@ extension WelcomeViewController: UITableViewDelegate, UITableViewDataSource {
         return UITableViewCell()
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let welocomData = welcomVM.welcomeList[indexPath.row]
+        let popupVC = PopupViewController(nibName: "PopupViewController", bundle: nil)
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.welcomeData =  welocomData
+        popupVC.delegate = self
+        self.present(popupVC, animated: true)
+    }
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y + scrollView.frame.height >= scrollView.contentSize.height {
-            print("scrollViewDidEndDecelerating")
+            //increase current offset 
             welcomVM.currentOffset += 1
             welcomVM.offset = welcomVM.currentOffset
             welcomVM.getWelcomeList()
         }
     }
-    
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-      
-    }
+
 }
 
+//MARK: - WelcomeViewModelDelegate
 extension WelcomeViewController: WelcomeViewModelDelegate {
     
     func refreshView() {
@@ -50,4 +58,21 @@ extension WelcomeViewController: WelcomeViewModelDelegate {
         }
        
     }
+}
+
+//MARK: - PopupViewControllerDelegate
+extension WelcomeViewController: PopupViewControllerDelegate {
+    
+    func leftTapAction(_ welcomeData: WelcomeModel) {
+    }
+    
+    func rightTapAction(_ welcomeData: WelcomeModel) {
+       if let index = welcomVM.welcomeList.firstIndex(where: { $0.id == welcomeData.id }) {
+           welcomVM.welcomeList[index].isSeleceted.toggle()
+           let cellIndexPath = IndexPath(row: index, section: 0)
+           authorsTableView.reloadRows(at: [cellIndexPath], with: .automatic)
+        }
+    }
+    
+    
 }

@@ -9,20 +9,26 @@ import UIKit
 
 class WelcomeViewController: BaseViewController {
     
+    //MARK: - IBOutlets
     @IBOutlet weak var authorsTableView: UITableView!
+    
+    //MARK: - Internal Variables
     var welcomVM = WelcomeViewModel()
     var pullRefresh = UIRefreshControl()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        hideNavigationBar()
-        
+        showNavigationBar()
         configureTableView()
+        hideBackButton()
         configureUI()
         welcomVM.delegate = self
         welcomVM.getWelcomeList()
     }
     
     private func configureUI() {
+        self.title = "Welcome"
         pullRefresh.addTarget(self, action: #selector(handleTopRefresh), for: .valueChanged)
         pullRefresh.tintColor = UIColor.blue
         authorsTableView.addSubview(pullRefresh)

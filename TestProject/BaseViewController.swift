@@ -13,7 +13,6 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    
     func hideNavigationBar() {
         self.navigationController?.navigationBar.isHidden = true
     }
@@ -21,6 +20,10 @@ class BaseViewController: UIViewController {
     
     func showNavigationBar() {
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    func hideBackButton() {
+        self.navigationItem.setHidesBackButton(true, animated: true)
     }
     
 }
