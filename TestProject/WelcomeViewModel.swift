@@ -37,7 +37,6 @@ class WelcomeViewModel: NSObject {
                 let decoder = JSONDecoder()
                 do {
                     let welcomeModels = try decoder.decode([WelcomeModel].self, from: data)
-                    print(welcomeModels)
                     if self.offset == 1 {
                         self.addWelcomeList(welcomeModels)
                     } else {
